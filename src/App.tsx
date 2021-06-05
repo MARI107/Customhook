@@ -11,8 +11,15 @@ address: "ADDRESS"
 }
 
 export default function App() {
+  const [UserProfile, setuserProfiles] = useState<Array<UserProfile>>([]);
+
 const onClickFetchUser = () => {
-axios.get<Array<User>>("https://jsonplaceholder.typicode.com/users")
+axios.get<Array<User>>("https://jsonplaceholder.typicode.com/users").then((res) => {});
+const data = res.data.map((user) => ({
+id: user.id,
+name: `S{user.}`
+}))
+});
 };
   return (
     <div className="App">
