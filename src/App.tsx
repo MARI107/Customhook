@@ -1,30 +1,32 @@
 import "./styles.css";
-import { UserCard } from "./components/UserCars"
+import { UserCard } from "./components/UserCars";
 import axios from "axios";
 import { User } from "./types/api/user";
-
-const user = {
-id: 1,
-name: "mari",
-email: "1212@aaa.com",
-address: "ADDRESS"
-}
+import { useState } from "react";
+import { UserProfile } from "./types/userProfile";
 
 export default function App() {
-  const [UserProfile, setuserProfiles] = useState<Array<UserProfile>>([]);
+  const [userProfiles, setUserProfiles] = useState<Array<UserProfile>>([]);
 
 const onClickFetchUser = () => {
-axios.get<Array<User>>("https://jsonplaceholder.typicode.com/users").then((res) => {});
+axios
+.get<Array<User>>("https://jsonplaceholder.typicode.com/users")
+.then((res) => {
 const data = res.data.map((user) => ({
 id: user.id,
-name: `S{user.}`
-}))
-});
+name: `S{user.name}(${user.username})`,
+email: user.email,
+address: `${user.address.city}${user.address.suite}${user.address.street}`,
+  }));
+  setUserProfiles(data);
+ });
 };
   return (
     <div className="App">
       <button onClick={onClickFetchUser}>データ取得</button>
-      <UserCard user={user} />
+      {userProfiles.map((user) => (
+        <UserCard key={user.id} user={user} />
+      ))}
     </div>
   );
 }
